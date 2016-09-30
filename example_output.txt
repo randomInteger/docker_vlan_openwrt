@@ -1,0 +1,133 @@
+$ sudo ./network_wrt_containers.sh
+Stopping any running containers...
+openwrt1
+openwrt2
+openwrt3
+openwrt4
+Press any key to continue...
+
+Creating bridge and bridge vlans...
+
+Running: ovs-vsctl add-br br0
+
+Running:ovs-vsctl add-br br0.100 br0 100
+
+Running:ovs-vsctl add-br br0.101 br0 101
+
+Press any key to continue...Running: ifconfig
+br0       Link encap:Ethernet  HWaddr 8a:bd:28:f3:d5:47
+          inet6 addr: fe80::6893:d6ff:feae:e119/64 Scope:Link
+          UP BROADCAST RUNNING  MTU:1500  Metric:1
+          RX packets:6 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:516 (516.0 B)  TX bytes:258 (258.0 B)
+
+br0.100   Link encap:Ethernet  HWaddr 0a:f7:5c:13:ec:ba
+          inet6 addr: fe80::8f7:5cff:fe13:ecba/64 Scope:Link
+          UP BROADCAST RUNNING  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:258 (258.0 B)
+
+br0.101   Link encap:Ethernet  HWaddr 86:83:80:aa:37:60
+          inet6 addr: fe80::8483:80ff:feaa:3760/64 Scope:Link
+          UP BROADCAST RUNNING  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:3 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:258 (258.0 B)
+
+docker0   Link encap:Ethernet  HWaddr 02:42:93:61:5c:a9
+          inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0
+          inet6 addr: fe80::42:93ff:fe61:5ca9/64 Scope:Link
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:911 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:11 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:60971 (60.9 KB)  TX bytes:876 (876.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 02:93:10:97:7e:df
+          inet addr:172.31.17.246  Bcast:172.31.31.255  Mask:255.255.240.0
+          inet6 addr: fe80::93:10ff:fe97:7edf/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:9001  Metric:1
+          RX packets:78706 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:52153 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:66882810 (66.8 MB)  TX bytes:23143757 (23.1 MB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+Press any key to continue...
+
+Starting docker containers...
+openwrt1
+openwrt2
+openwrt3
+openwrt4
+CONTAINER ID        IMAGE                               COMMAND             CREATED             STATUS                  PORTS               NAMES
+ffd1d002a46b        openwrt-x86-generic-rootfs:latest   "/bin/ash"          37 minutes ago      Up Less than a second                       openwrt4
+68700fe2215f        openwrt-x86-generic-rootfs:latest   "/bin/ash"          37 minutes ago      Up Less than a second                       openwrt3
+a0234a7d656a        openwrt-x86-generic-rootfs:latest   "/bin/ash"          37 minutes ago      Up Less than a second                       openwrt2
+db4079aecb92        openwrt-x86-generic-rootfs:latest   "/bin/ash"          37 minutes ago      Up Less than a second                       openwrt1
+Press any key to continue...
+
+Running: pipework br0.100 openwrt1 192.168.0.1/24
+Running: pipework br0.100 openwrt2 192.168.0.2/24
+Running: pipework br0.101 openwrt3 192.168.0.3/24
+Running: pipework br0.101 openwrt4 192.168.0.4/24
+Press any key to continue...
+
+openwrt1 should be able to ping only openwrt2 at 192.168.0.2
+
+Running: docker exec openwrt1 ping -c 1 -W 1 192.168.0.2
+PING 192.168.0.2 (192.168.0.2): 56 data bytes
+64 bytes from 192.168.0.2: seq=0 ttl=64 time=0.550 ms
+
+--- 192.168.0.2 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 0.550/0.550/0.550 ms
+
+Running: docker exec openwrt1 ping -c 1 -W 1 192.168.0.3
+PING 192.168.0.3 (192.168.0.3): 56 data bytes
+
+--- 192.168.0.3 ping statistics ---
+1 packets transmitted, 0 packets received, 100% packet loss
+
+Running: docker exec openwrt1 ping -c 1 -W 1 192.168.0.4
+PING 192.168.0.4 (192.168.0.4): 56 data bytes
+
+--- 192.168.0.4 ping statistics ---
+1 packets transmitted, 0 packets received, 100% packet loss
+Press any key to continue...
+
+openwrt4 should be able to ping only openwrt3 at 192.168.0.3
+
+Running: docker exec openwrt4 ping -c 1 -W 1 192.168.0.1
+PING 192.168.0.1 (192.168.0.1): 56 data bytes
+
+--- 192.168.0.1 ping statistics ---
+1 packets transmitted, 0 packets received, 100% packet loss
+
+Running: docker exec openwrt4 ping -c 1 -W 1 192.168.0.2
+PING 192.168.0.2 (192.168.0.2): 56 data bytes
+
+--- 192.168.0.2 ping statistics ---
+1 packets transmitted, 0 packets received, 100% packet loss
+
+Running: docker exec openwrt4 ping -c 1 -W 1 192.168.0.3
+PING 192.168.0.3 (192.168.0.3): 56 data bytes
+64 bytes from 192.168.0.3: seq=0 ttl=64 time=0.526 ms
+
+--- 192.168.0.3 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 0.526/0.526/0.526 ms
+Press any key to continue...
