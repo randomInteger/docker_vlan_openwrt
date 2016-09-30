@@ -22,8 +22,8 @@ printf "\\n"
 
 #RUN this section only the first time you run this script,
 #leave commented otherwise.
-printf "\\n"
-printf "Creating openwrt[1-4] from openwrt-x86-generic-rootfs:latest\n"
+#printf "\\n"
+#printf "Creating openwrt[1-4] from openwrt-x86-generic-rootfs:latest\n"
 #Create docker containers from a base openwrt 14.04 imaage
 #docker import http://downloads.openwrt.org/attitude_adjustment/12.09/x86/generic/openwrt-x86-generic-rootfs.tar.gz openwrt-x86-generic-rootfs
 #docker create -it --name openwrt1 openwrt-x86-generic-rootfs:latest /bin/ash
