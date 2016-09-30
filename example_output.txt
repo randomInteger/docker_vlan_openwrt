@@ -10,9 +10,9 @@ Creating bridge and bridge vlans...
 
 Running: ovs-vsctl add-br br0
 
-Running:ovs-vsctl add-br br0.100 br0 100
+Running: ovs-vsctl add-br br0.100 br0 100
 
-Running:ovs-vsctl add-br br0.101 br0 101
+Running: ovs-vsctl add-br br0.101 br0 101
 
 Press any key to continue...Running: ifconfig
 br0       Link encap:Ethernet  HWaddr 8a:bd:28:f3:d5:47
