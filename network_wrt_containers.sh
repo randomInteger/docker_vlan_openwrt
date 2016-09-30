@@ -40,10 +40,10 @@ printf "\\n"
 printf "Running: ovs-vsctl add-br br0\\n"
 ovs-vsctl add-br br0
 printf "\\n"
-printf "Running:ovs-vsctl add-br br0.100 br0 100\\n"
+printf "Running: ovs-vsctl add-br br0.100 br0 100\\n"
 ovs-vsctl add-br br0.100 br0 100
 printf "\\n"
-printf "Running:ovs-vsctl add-br br0.101 br0 101\\n"
+printf "Running: ovs-vsctl add-br br0.101 br0 101\\n"
 ovs-vsctl add-br br0.101 br0 101
 printf "\\n"
 read -p "Press any key to continue..." -n1 -s
